@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestaoFrota.App.ViewModels"
+             x:Class="GestaoFrota.App.Views.NovoLancamentoPage"
+             x:DataType="vm:NovoLancamentoViewModel"
+             Title="Novo lançamento">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <Label Text="Tipo" FontSize="12" TextColor="Gray" />
+            <Picker ItemsSource="{Binding Tipos}" SelectedItem="{Binding Tipo}" />
+
+            <Entry Placeholder="Valor (ex.: 1500,00)" Keyboard="Numeric" Text="{Binding ValorTexto}" />
+            <Entry Placeholder="Descrição" Text="{Binding Descricao}" MaxLength="300" />
+
+            <Picker Title="Categoria" ItemsSource="{Binding CategoriasDoTipo}"
+                    ItemDisplayBinding="{Binding Nome}" SelectedItem="{Binding CategoriaSelecionada}" />
+            <Picker Title="Forma de pagamento" ItemsSource="{Binding Formas}"
+                    ItemDisplayBinding="{Binding Nome}" SelectedItem="{Binding FormaSelecionada}" />
+
+            <Label Text="Situação" FontSize="12" TextColor="Gray" />
+            <Picker ItemsSource="{Binding Situacoes}" SelectedItem="{Binding Status}" />
+
+            <Label Text="Vencimento" FontSize="12" TextColor="Gray" />
+            <DatePicker Date="{Binding DataVencimento}" />
+
+            <VerticalStackLayout IsVisible="{Binding EstaPago}">
+                <Label Text="Data do pagamento" FontSize="12" TextColor="Gray" />
+                <DatePicker Date="{Binding DataPagamento}" />
+            </VerticalStackLayout>
+
+            <Label Text="Comprovante (imagem)" FontSize="12" TextColor="Gray" />
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Tirar foto" Command="{Binding TirarFotoCommand}" />
+                <Button Text="Galeria" Command="{Binding EscolherDaGaleriaCommand}" />
+            </HorizontalStackLayout>
+            <Label Text="{Binding ComprovanteTexto}" FontSize="12" TextColor="Gray" />
+
+            <Label Text="{Binding MensagemErro}" TextColor="#D9534F"
+                   IsVisible="{Binding MensagemErro, Converter={StaticResource StringNotEmptyConverter}}" />
+
+            <Button Text="Salvar" Command="{Binding SalvarCommand}"
+                    IsEnabled="{Binding Carregando, Converter={StaticResource InverseBoolConverter}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

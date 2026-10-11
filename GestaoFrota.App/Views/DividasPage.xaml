@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestaoFrota.App.ViewModels"
+             xmlns:models="clr-namespace:GestaoFrota.App.Models"
+             x:Class="GestaoFrota.App.Views.DividasPage"
+             x:DataType="vm:DividasViewModel"
+             Title="Dívidas">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <Label Text="Nova dívida ou financiamento" FontAttributes="Bold" />
+            <Entry Placeholder="Descrição" Text="{Binding Descricao}" MaxLength="200" />
+            <Entry Placeholder="Valor total" Keyboard="Numeric" Text="{Binding ValorTotalTexto}" />
+            <Entry Placeholder="Quantidade de parcelas" Keyboard="Numeric" Text="{Binding ParcelasTexto}" />
+            <Label Text="Vencimento da 1ª parcela" FontSize="12" TextColor="Gray" />
+            <DatePicker Date="{Binding PrimeiroVencimento}" />
+            <Entry Placeholder="Valor para quitação antecipada" Keyboard="Numeric" Text="{Binding QuitacaoTexto}" />
+
+            <Label Text="{Binding MensagemErro}" TextColor="#D9534F"
+                   IsVisible="{Binding MensagemErro, Converter={StaticResource StringNotEmptyConverter}}" />
+            <Label Text="{Binding MensagemSucesso}" TextColor="#2E7D32"
+                   IsVisible="{Binding MensagemSucesso, Converter={StaticResource StringNotEmptyConverter}}" />
+
+            <Button Text="Salvar dívida" Command="{Binding SalvarCommand}"
+                    IsEnabled="{Binding Carregando, Converter={StaticResource InverseBoolConverter}}" />
+
+            <Label Text="Dívidas cadastradas" FontAttributes="Bold" Margin="0,12,0,0" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Dividas}" Spacing="8">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:Divida">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Descricao}" FontAttributes="Bold" />
+                            <Label Text="{Binding ParcelasTexto}" FontSize="12" />
+                            <Label Text="{Binding DetalheTexto}" FontSize="12" TextColor="Gray" />
+                            <Label Text="{Binding QuitacaoTexto}" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

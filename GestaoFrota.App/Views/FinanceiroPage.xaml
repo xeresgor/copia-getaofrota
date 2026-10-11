@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GestaoFrota.App.ViewModels"
+             xmlns:models="clr-namespace:GestaoFrota.App.Models"
+             x:Class="GestaoFrota.App.Views.FinanceiroPage"
+             x:DataType="vm:FinanceiroViewModel"
+             Title="Financeiro">
+    <Grid RowDefinitions="Auto, Auto, *" Padding="16" RowSpacing="12">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="4">
+            <Label Text="Saldo atual (somente pagos e recebidos)" FontSize="12" TextColor="Gray" />
+            <Label Text="{Binding SaldoTexto}" FontSize="28" FontAttributes="Bold" />
+            <Label Text="{Binding MensagemErro}" TextColor="#D9534F"
+                   IsVisible="{Binding MensagemErro, Converter={StaticResource StringNotEmptyConverter}}" />
+            <Button Text="Novo lançamento" Command="{Binding NovoLancamentoCommand}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="4">
+            <Label Text="Projeção de caixa (saldo atual + pendentes, por mês)" FontAttributes="Bold" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Projecao}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:ProjecaoMes">
+                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="8">
+                            <Label Grid.Column="0" Text="{Binding MesTexto}" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding PendentesTexto, StringFormat='pendentes: {0}'}" TextColor="Gray" FontSize="12" />
+                            <Label Grid.Column="2" Text="{Binding SaldoTexto}" />
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <RefreshView Grid.Row="2" IsRefreshing="{Binding Carregando}" Command="{Binding CarregarCommand}">
+            <CollectionView ItemsSource="{Binding Lancamentos}">
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum lançamento ainda." HorizontalOptions="Center" TextColor="Gray" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Movimentacao">
+                        <Grid Padding="4,8" ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding Titulo}" FontAttributes="Bold" />
+                                <Label Text="{Binding Detalhe}" FontSize="12" TextColor="Gray" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="End">
+                                <Label Text="{Binding ValorTexto}" HorizontalOptions="End" />
+                                <Label Text="{Binding SituacaoTexto}" FontSize="12" TextColor="Gray" HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

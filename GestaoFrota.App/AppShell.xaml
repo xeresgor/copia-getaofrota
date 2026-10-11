@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:GestaoFrota.App.Views"
+       x:Class="GestaoFrota.App.AppShell"
+       Title="Gestão de Frota">
+
+    <TabBar>
+
+        <ShellContent Title="Início"
+                      Icon="home.png"
+                      ContentTemplate="{DataTemplate views:DashboardPage}" />
+
+        <!-- Financeiro e Dívidas: só Administrador e Financeiro (ver AppShell.xaml.cs) -->
+        <ShellContent x:Name="AbaFinanceiro"
+                      Title="Financeiro"
+                      ContentTemplate="{DataTemplate views:FinanceiroPage}" />
+        <ShellContent x:Name="AbaDividas"
+                      Title="Dívidas"
+                      ContentTemplate="{DataTemplate views:DividasPage}" />
+        <!--
+            Categorias e Formas de Pagamento ficam sempre visíveis no menu;
+            a restrição de escrita (RBAC) acontece dentro de cada página
+            (PodeGerenciar) e é sempre validada de novo no backend.
+        -->
+        <ShellContent x:Name="AbaCategorias"
+                      Title="Categorias"
+                      Icon="category.png"
+                      ContentTemplate="{DataTemplate views:CategoriasPage}" />
+
+        <ShellContent x:Name="AbaFormasPagamento"
+                      Title="Pagamento"
+                      Icon="payment.png"
+                      ContentTemplate="{DataTemplate views:FormasPagamentoPage}" />
+
+        <ShellContent
+                      x:Name="AbaUsuarios"
+                      Title="Usuários"
+                      ContentTemplate="{DataTemplate views:UsuariosPage}" />
+
+    </TabBar>
+
+</Shell>
